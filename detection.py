@@ -29,8 +29,8 @@ import imutils
 
 def detect(image):
   image = image.copy()
-  robfront = (0, 0)
-  robback = (0, 0)
+  robfront = ()
+  robback = ()
   corners = []
   sodas = []
   milks = []
@@ -94,7 +94,8 @@ def detect(image):
       elif color == 'yellow':
         sodas.append((cX, cY))
 
-  return image
+  # return image
+  return (robfront, robback), corners, sodas, milks
 
 def main():
   cap = cv2.VideoCapture(1)
