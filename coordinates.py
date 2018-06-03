@@ -50,7 +50,7 @@ def rela_coords():
   robot, corners, sodas, milks = detection.detect(image)
 
   # if there are any problems return dummy map, so that robot will move
-  if len(robot[0]) != 2 or len(robot[0]) != 2 or len(corners) != 2:
+  if len(robot[0]) != 2 or len(robot[1]) != 2 or len(corners) != 2:
     dummy_corners = [(50, 50), (-50,-50)]
     dummy_sodas = []
     dummy_milks = [(0, 10)]
