@@ -39,7 +39,7 @@ def detect(image):
   bounds = {
     "green":  [(0,    83-5, 128-5),     (255, 103+5, 143+5)],
     "yellow": [(0,   -15+128, 20+128),  (255,   5+128, 40+128)],
-    "red":    [(0,   40+128, 20+128),   (255,  75+128, 50+128)],
+    "red":    [(0,   35+128,  5+128),   (255,  75+128, 50+128)],
     "blue":   [(0,   -20+128, -55+128), (255,   5+128, -20+128)],
     # "cyan":   [(50,   -15+128, -5+128),  (200,   0+128,  5+128)],
   }
@@ -63,9 +63,9 @@ def detect(image):
         continue
 
       # ignore small fragmentations
-      # if M["m00"] < 300:
-      #   print('area <300 ignored')
-      #   continue
+      if M["m00"] < 20:
+        # print('area <20 ignored')
+        continue
 
       cX = int(M["m10"] / M["m00"])
       cY = int(M["m01"] / M["m00"])
@@ -77,18 +77,21 @@ def detect(image):
 
       label = '{} {}-gon'.format(color, sides)
 
-      # Draw shape
-      cv2.drawContours(image, [approx], -1, (0, 255, 0), 2)
-      # cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
-      cv2.circle(image, (cX, cY), 3, (255, 255, 255), -1)
-      cv2.putText(image, label, (cX+5, cY), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+      # if color == 'green' and sides == 4:
+      #   print('<green> area:', M["m00"])
 
-      if color == 'red' and sides == 3:
+      # Draw shape
+      # cv2.drawContours(image, [approx], -1, (0, 255, 0), 2)
+      cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
+      cv2.circle(image, (cX, cY), 3, (255, 255, 255), -1)
+      cv2.putText(image, label, (cX+5, cY), cv2.FONT_HERSHEY_SIMPLEX, .3, (140, 174, 32), 1)
+
+      if color == 'red' and sides == 4:
         corners.append((cX, cY))
-      elif color == 'red' and sides == 4:
-        robfront = (cX, cY)
-      elif color == 'blue':
+      elif color == 'red' and sides == 3:
         robback = (cX, cY)
+      elif color == 'blue':
+        robfront = (cX, cY)
       elif color == 'green':
         milks.append((cX, cY))
       elif color == 'yellow':
